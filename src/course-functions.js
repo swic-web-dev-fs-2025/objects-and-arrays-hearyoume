@@ -28,7 +28,7 @@ const course = {
 
 // Separate functions that work with the data (like React!)
 const getStudentAverage = (students, studentId) => {
-  const student = students.find((s) => s.id === studentId);
+  const student = students.find((st) => st.id === studentId);
   if (!student || student.grades.length === 0) return 0;
 
   // Calculate total using reduce() method
@@ -60,12 +60,12 @@ console.info("Maria's average:", mariaAverage);
 const topStudents = getHighPerformers(course.students, 85);
 console.info(
   "High performers:",
-  topStudents.map((s) => s.name)
+  topStudents.map((st) => st.name)
 );
 
 // Test with different threshold
 const excellentStudents = getHighPerformers(course.students, 90);
 console.info(
   "Excellent students (90+):",
-  excellentStudents.map((s) => s.name)
+  excellentStudents.map((st) => st.name)
 );
