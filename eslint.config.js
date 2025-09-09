@@ -1,14 +1,16 @@
-import js from "@eslint/js";
+import eslintJs from "@eslint/js";
 import globals from "globals";
 import json from "@eslint/json";
 import markdown from "@eslint/markdown";
 import prettier from "eslint-config-prettier";
 
-// Clean Code principle: Named constants instead of magic numbers
-const ESLINT_THRESHOLDS = {
-  MAX_CYCLOMATIC_COMPLEXITY: 5,
-  MAX_LINES_PER_FUNCTION: 50, // Functions should do one thing
-  MAX_FUNCTION_PARAMS: 3, // Functions should have 2 or fewer params ideally
+const STUDENT_LIMITS = {
+  MAX_COMPLEXITY: 4, // Forces simple logic
+  MAX_LINES: 30, // Forces focused functions
+  MAX_PARAMS: 2, // Forces good design decisions
+  MAX_DEPTH: 2, // Prevents nested spaghetti
+  MIN_NAME_LENGTH: 2, // Prevents single-char variables
+  MAX_STATEMENTS: 10, // Forces decomposition
 };
 
 export default [
@@ -20,79 +22,96 @@ export default [
       globals: globals.node,
     },
     rules: {
-      ...js.configs.recommended.rules,
+      ...eslintJs.configs.recommended.rules,
 
-      // Variables (Clean Code)
+      // Functions should do one thing
+      "max-lines-per-function": [
+        "error",
+        {
+          max: STUDENT_LIMITS.MAX_LINES,
+          skipBlankLines: true,
+          skipComments: true,
+        },
+      ],
+      "max-statements": ["error", STUDENT_LIMITS.MAX_STATEMENTS],
+      "max-params": ["error", STUDENT_LIMITS.MAX_PARAMS],
+
+      // Keep logic simple
+      complexity: ["error", STUDENT_LIMITS.MAX_COMPLEXITY],
+      "max-depth": ["error", STUDENT_LIMITS.MAX_DEPTH],
+      "no-nested-ternary": "error",
+
+      // Clear naming
+      "id-length": [
+        "error",
+        {
+          min: STUDENT_LIMITS.MIN_NAME_LENGTH,
+          exceptions: [
+            "i",
+            "j",
+            "k", // Loop counters
+            "x",
+            "y",
+            "z", // Coordinates
+            "e", // Event handlers
+            "n", // Common for numbers in math
+            "_", // Lodash or unused params
+            "t", // Common for time/translate functions
+          ],
+        },
+      ],
+      camelcase: "error",
+
+      // No magic 🪄 numbers
+      "no-magic-numbers": [
+        "error",
+        {
+          ignore: [0, 1],
+          ignoreArrayIndexes: true,
+        },
+      ],
+
+      // Modern JavaScript
       "no-var": "error",
       "prefer-const": "error",
-
-      // Functions (Clean Code)
-      "max-params": ["warn", ESLINT_THRESHOLDS.MAX_FUNCTION_PARAMS],
-      "max-lines-per-function": [
-        "warn",
-        ESLINT_THRESHOLDS.MAX_LINES_PER_FUNCTION,
-      ],
-      "no-nested-ternary": "error", // Avoid complex conditionals
-      complexity: ["warn", ESLINT_THRESHOLDS.MAX_CYCLOMATIC_COMPLEXITY],
       "prefer-arrow-callback": "error",
-
-      // Objects and Arrays
-      "prefer-destructuring": [
-        "warn",
-        {
-          array: false,
-          object: true,
-        },
-      ],
-      "object-shorthand": ["error", "always"],
-      "no-array-constructor": "error",
-      "no-new-object": "error",
-      "prefer-template": "warn",
-      "prefer-spread": "error",
-
-      // Clean Code Basics
+      "prefer-template": "error",
       eqeqeq: ["error", "always"],
-      "no-else-return": "warn",
-      "no-lonely-if": "warn",
-      "no-unneeded-ternary": "error",
-      "operator-assignment": ["error", "always"],
+      "dot-notation": "error",
 
-      // Side Effects & Immutability
-      "no-param-reassign": ["warn", { props: true }],
+      // Single Responsibility
+      "max-classes-per-file": ["error", 1],
+      "one-var": ["error", "never"],
 
-      // General Quality
-      "no-unused-vars": [
-        "error",
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-        },
-      ],
-      "no-shadow": "error",
-      "no-redeclare": "error",
-      "no-use-before-define": [
-        "error",
-        {
-          functions: false,
-        },
-      ],
+      // Immutability
+      "no-param-reassign": "error",
+      "no-multi-assign": "error",
+      "no-return-assign": "error",
 
+      // Early returns
+      "no-else-return": ["error", { allowElseIf: false }],
+      "no-lonely-if": "error",
+
+      // Error handling
+      "no-throw-literal": "error",
+      "prefer-promise-reject-errors": "error",
+      "consistent-return": "error", // Functions should always return or never return
+      "no-fallthrough": "error", // Prevent accidental switch fallthrough
+      "no-shadow": "error", // Prevent variable shadowing bugs
+
+      // No sloppy code
+      "no-unused-vars": "error",
+      "no-debugger": "error",
+      "no-alert": "error",
       "no-console": [
-        "warn",
+        "error",
         {
-          allow: ["info", "warn", "error", "table"],
+          allow: ["info", "warn", "error", "table", "time", "timeEnd"],
         },
       ],
 
-      // Comments (Clean Code)
-      "no-warning-comments": [
-        "warn",
-        {
-          terms: ["todo", "fixme", "hack"],
-          location: "start",
-        },
-      ],
-      "multiline-comment-style": ["warn", "separate-lines"],
+      // Comments
+      "spaced-comment": ["error", "always"],
     },
   },
   {
