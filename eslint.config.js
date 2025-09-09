@@ -62,15 +62,6 @@ export default [
       ],
       camelcase: "error",
 
-      // No magic 🪄 numbers
-      "no-magic-numbers": [
-        "error",
-        {
-          ignore: [0, 1],
-          ignoreArrayIndexes: true,
-        },
-      ],
-
       // Modern JavaScript
       "no-var": "error",
       "prefer-const": "error",
