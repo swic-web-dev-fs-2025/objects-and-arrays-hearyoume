@@ -34,6 +34,15 @@ const gradeBook = {
     const student = course.students.find((st) => st.id === studentId);
     if (!student) return null;
 
+    // Only include assignments that have a valid numeric score
+    const gradedAssignments = student.assignments.filter(
+      (assignment) =>
+        typeof assignment.points === "number" &&
+        typeof assignment.maxPoints === "number"
+    );
+
+    if (gradedAssignments.length === 0) return null;
+
     const totalPoints = student.assignments.reduce(
       (sum, assign) => sum + assign.points,
       0
@@ -43,7 +52,7 @@ const gradeBook = {
       0
     );
 
-    return ((totalPoints / totalMaxPoints) * 100).toFixed(2);
+    return (totalPoints / totalMaxPoints) * 100;
   },
 
   // TODO: Get class average for a course
@@ -60,12 +69,14 @@ const gradeBook = {
 
     if (validStudents.length === 0) return null;
 
-    const totalPercentages = course.students.reduce((sum, student) => {
+    const totalPercentages = validStudents.reduce((sum, student) => {
       const studentPercentage = this.getStudentPercentage(courseId, student.id);
-      return sum + studentPercentage;
+      return typeof studentPercentage === "number"
+        ? sum + studentPercentage
+        : sum;
     }, 0);
 
-    return totalPercentages / course.students.length;
+    return totalPercentages / validStudents.length;
   },
 
   // TODO: Add new assignment to all students (immutably!)
@@ -100,11 +111,11 @@ console.info("=== Grade Book Testing ===");
 
 // Test student percentage
 const mariaPercentage = gradeBook.getStudentPercentage("CS277", 1);
-console.info("Maria's percentage:", mariaPercentage);
+console.info("Maria's percentage:", mariaPercentage.toFixed(2));
 
 // Test class average
 const classAverage = gradeBook.getClassAverage("CS277");
-console.info("Class average:", classAverage);
+console.info("Class average:", classAverage.toFixed(2));
 
 // Test adding assignment
 const updatedGradeBook = gradeBook.addAssignment("CS277", "Homework 1", 50);
