@@ -70,8 +70,28 @@ const gradeBook = {
 
   // TODO: Add new assignment to all students (immutably!)
   addAssignment(courseId, assignmentName, maxPoints) {
-    // Your implementation here
-    // Should return new gradebook object with assignment added
+    // Return a new gradeBook object with the assignment added to all students in the course
+    return {
+      ...gradeBook,
+      courses: gradeBook.courses.map((course) => {
+        if (course.id !== courseId) return course;
+
+        return {
+          ...course,
+          students: course.students.map((student) => ({
+            ...student,
+            assignments: [
+              ...student.assignments,
+              {
+                name: assignmentName,
+                maxPoints,
+                points: null, // placeholder until graded
+              },
+            ],
+          })),
+        };
+      }),
+    };
   },
 };
 
