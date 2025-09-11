@@ -50,6 +50,22 @@ const gradeBook = {
   getClassAverage(courseId) {
     // Your implementation here
     // Should return average percentage for all students
+    const course = this.courses.find((cs) => cs.id === courseId);
+    if (!course) return null;
+
+    // Filter out students who have no assignments
+    const validStudents = course.students.filter(
+      (student) => student.assignments.length > 0
+    );
+
+    if (validStudents.length === 0) return null;
+
+    const totalPercentages = course.students.reduce((sum, student) => {
+      const studentPercentage = this.getStudentPercentage(courseId, student.id);
+      return sum + studentPercentage;
+    }, 0);
+
+    return totalPercentages / course.students.length;
   },
 
   // TODO: Add new assignment to all students (immutably!)
