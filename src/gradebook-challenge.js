@@ -71,7 +71,7 @@ const getClassAverage = (courseId) => {
   if (validStudents.length === 0) return null;
 
   const totalPercentages = validStudents.reduce((sum, student) => {
-    const studentPercentage = this.getStudentPercentage(courseId, student.id);
+    const studentPercentage = getStudentPercentage(courseId, student.id);
     return typeof studentPercentage === "number"
       ? sum + studentPercentage
       : sum;
@@ -110,13 +110,17 @@ const addAssignment = ({ courseId, assignmentName, maxPoints }) => {
 console.info("=== Grade Book Testing ===");
 
 // Test student percentage
-const mariaPercentage = gradeBook.getStudentPercentage("CS277", 1);
+const mariaPercentage = getStudentPercentage("CS277", 1);
 console.info("Maria's percentage:", mariaPercentage.toFixed(2));
 
 // Test class average
-const classAverage = gradeBook.getClassAverage("CS277");
+const classAverage = getClassAverage("CS277");
 console.info("Class average:", classAverage.toFixed(2));
 
 // Test adding assignment
-const updatedGradeBook = gradeBook.addAssignment("CS277", "Homework 1", 50);
+const updatedGradeBook = addAssignment({
+  courseId: "CS277",
+  assignmentName: "Homework 1",
+  maxPoints: 50,
+});
 console.info("Updated gradebook:", updatedGradeBook);
