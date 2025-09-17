@@ -23,87 +23,87 @@ const gradeBook = {
       ],
     },
   ],
+};
 
-  // TODO: Calculate student's percentage in a course
-  getStudentPercentage(courseId, studentId) {
-    // Your implementation here
-    // Should return percentage (0-100) based on assignments
-    const course = this.courses.find((cs) => cs.id === courseId);
-    if (!course) return null;
+// TODO: Calculate student's percentage in a course
+const getStudentPercentage = (courseId, studentId) => {
+  // Your implementation here
+  // Should return percentage (0-100) based on assignments
+  const course = gradeBook.courses.find((cs) => cs.id === courseId);
+  if (!course) return null;
 
-    const student = course.students.find((st) => st.id === studentId);
-    if (!student) return null;
+  const student = course.students.find((st) => st.id === studentId);
+  if (!student) return null;
 
-    // Only include assignments that have a valid numeric score
-    const gradedAssignments = student.assignments.filter(
-      (assignment) =>
-        typeof assignment.points === "number" &&
-        typeof assignment.maxPoints === "number"
-    );
+  // Only include assignments that have a valid numeric score
+  const gradedAssignments = student.assignments.filter(
+    (assignment) =>
+      typeof assignment.points === "number" &&
+      typeof assignment.maxPoints === "number"
+  );
 
-    if (gradedAssignments.length === 0) return null;
+  if (gradedAssignments.length === 0) return null;
 
-    const totalPoints = student.assignments.reduce(
-      (sum, assign) => sum + assign.points,
-      0
-    );
-    const totalMaxPoints = student.assignments.reduce(
-      (sum, assign) => sum + assign.maxPoints,
-      0
-    );
+  const totalPoints = student.assignments.reduce(
+    (sum, assign) => sum + assign.points,
+    0
+  );
+  const totalMaxPoints = student.assignments.reduce(
+    (sum, assign) => sum + assign.maxPoints,
+    0
+  );
 
-    return (totalPoints / totalMaxPoints) * 100;
-  },
+  return (totalPoints / totalMaxPoints) * 100;
+};
 
-  // TODO: Get class average for a course
-  getClassAverage(courseId) {
-    // Your implementation here
-    // Should return average percentage for all students
-    const course = this.courses.find((cs) => cs.id === courseId);
-    if (!course) return null;
+// TODO: Get class average for a course
+const getClassAverage = (courseId) => {
+  // Your implementation here
+  // Should return average percentage for all students
+  const course = gradeBook.courses.find((cs) => cs.id === courseId);
+  if (!course) return null;
 
-    // Filter out students who have no assignments
-    const validStudents = course.students.filter(
-      (student) => student.assignments.length > 0
-    );
+  // Filter out students who have no assignments
+  const validStudents = course.students.filter(
+    (student) => student.assignments.length > 0
+  );
 
-    if (validStudents.length === 0) return null;
+  if (validStudents.length === 0) return null;
 
-    const totalPercentages = validStudents.reduce((sum, student) => {
-      const studentPercentage = this.getStudentPercentage(courseId, student.id);
-      return typeof studentPercentage === "number"
-        ? sum + studentPercentage
-        : sum;
-    }, 0);
+  const totalPercentages = validStudents.reduce((sum, student) => {
+    const studentPercentage = this.getStudentPercentage(courseId, student.id);
+    return typeof studentPercentage === "number"
+      ? sum + studentPercentage
+      : sum;
+  }, 0);
 
-    return totalPercentages / validStudents.length;
-  },
+  return totalPercentages / validStudents.length;
+};
 
-  // TODO: Add new assignment to all students (immutably!)
-  addAssignment(courseId, assignmentName, maxPoints) {
-    // Return a new gradeBook object with the assignment added to all students in the course
-    return {
-      ...gradeBook,
-      courses: gradeBook.courses.map((course) => {
-        if (course.id !== courseId) return course;
+// TODO: Add new assignment to all students (immutably!)
+const addAssignment = ({ courseId, assignmentName, maxPoints }) => {
+  // Return a new gradeBook object with the assignment added to all students in the course
+  return {
+    ...gradeBook,
+    courses: gradeBook.courses.map((course) => {
+      if (course.id !== courseId) return course;
 
-        return {
-          ...course,
-          students: course.students.map((student) => ({
-            ...student,
-            assignments: [
-              ...student.assignments,
-              {
-                name: assignmentName,
-                maxPoints,
-                points: null, // placeholder until graded
-              },
-            ],
-          })),
-        };
-      }),
-    };
-  },
+      return {
+        ...course,
+        students: course.students.map((student) => ({
+          ...student,
+          assignments: [
+            ...student.assignments,
+            {
+              name: assignmentName,
+              maxPoints,
+              points: null, // placeholder until graded
+            },
+          ],
+        })),
+      };
+    }),
+  };
 };
 
 // Test your implementations
