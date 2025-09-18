@@ -106,6 +106,21 @@ const addAssignment = ({ courseId, assignmentName, maxPoints }) => {
   };
 };
 
+const addCourse = ({ id, name }) => {
+  // Return a new gradeBook object with the new course added
+  return {
+    ...gradeBook,
+    courses: [
+      ...gradeBook.courses,
+      {
+        id,
+        name,
+        students: [],
+      },
+    ],
+  };
+};
+
 // Test your implementations
 console.info("=== Grade Book Testing ===");
 
@@ -124,3 +139,11 @@ const updatedGradeBook = addAssignment({
   maxPoints: 50,
 });
 console.info("Updated gradebook:", updatedGradeBook);
+
+// Test adding course
+const newCourseGradeBook = addCourse({
+  id: "CS306",
+  name: "Data Structures",
+  students: [],
+});
+console.info("Gradebook with new course:", newCourseGradeBook);
