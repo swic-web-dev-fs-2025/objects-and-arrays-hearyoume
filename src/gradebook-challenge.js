@@ -110,14 +110,17 @@ const addCourse = ({ id, name }) => {
   // Return a new gradeBook object with the new course added
   return {
     ...gradeBook,
-    courses: [
-      ...gradeBook.courses,
-      {
-        id,
-        name,
-        students: [],
-      },
-    ],
+    courses: gradeBook.courses.some((course) => course.id === id)
+      ? gradeBook.courses
+      : // Add new course only if it doesn't already exist
+        [
+          ...gradeBook.courses,
+          {
+            id,
+            name,
+            students: [],
+          },
+        ],
   };
 };
 
