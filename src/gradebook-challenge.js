@@ -81,28 +81,29 @@ const getClassAverage = (courseId) => {
 };
 
 // TODO: Add new assignment to all students (immutably!)
-const addAssignment = ({ courseId, assignmentName, maxPoints }) => {
+function addAssignment({ courseId, assignmentName, maxPoints }) =>{
   // Return a new gradeBook object with the assignment added to all students in the course
+  const foundCourse = gradeBook.courses.find(({id}) => id === courseId);
+
+  const newAssignment = { name: assignmentName, points: null, maxPoints };
+
+  const updateStudents = foundCourse.students.map((student) => ({
+    ...student,
+    assignments: [...student.assignments, newAssignment],
+  }));
+
+  const updatedCourse = {
+    ...foundCourse,
+    students: updateStudents,
+  };
+
+  const updatedCourses = gradeBook.courses.map((course) =>
+    course.id === courseId ? updatedCourse : course
+  );
+
   return {
     ...gradeBook,
-    courses: gradeBook.courses.map((course) => {
-      if (course.id !== courseId) return course;
-
-      return {
-        ...course,
-        students: course.students.map((student) => ({
-          ...student,
-          assignments: [
-            ...student.assignments,
-            {
-              name: assignmentName,
-              maxPoints,
-              points: null, // placeholder until graded
-            },
-          ],
-        })),
-      };
-    }),
+    courses: updatedCourses,
   };
 };
 
