@@ -1,7 +1,7 @@
 import {
   getStudentPercentage,
   getClassAverage,
-  addAssignment,
+  addAssignmentToCourse,
 } from "./utils.js";
 
 const courses = [
@@ -49,7 +49,7 @@ const classAverage = getClassAverage(courses, "CS277");
 console.info("Class average:", classAverage);
 
 // Test adding assignment
-const updatedGradeBook = addAssignment({
+const updatedGradeBook = addAssignmentToCourse({
   courses,
   courseId: "CS277",
   assignmentName: "Homework 1",
