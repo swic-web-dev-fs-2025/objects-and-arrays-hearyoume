@@ -32,7 +32,12 @@ const getClassAverage = (courses, courseId) => {
   );
 };
 
-const addAssignment = ({ courses, courseId, assignmentName, maxPoints }) => {
+const addAssignmentToCourse = ({
+  courses,
+  courseId,
+  assignmentName,
+  maxPoints,
+}) => {
   const clonedCOURSES = structuredClone(courses);
 
   const foundCourse = clonedCOURSES.find(({ id }) => id === courseId);
@@ -49,4 +54,4 @@ const addAssignment = ({ courses, courseId, assignmentName, maxPoints }) => {
   return clonedCOURSES;
 };
 
-export { getStudentPercentage, getClassAverage, addAssignment };
+export { getStudentPercentage, getClassAverage, addAssignmentToCourse };
