@@ -1,5 +1,5 @@
 import courses from "./index.js";
 
-const COURSES = courses;
+const COURSE = courses;
 
-export default COURSES;
+export default COURSE;
