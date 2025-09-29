@@ -1,60 +1,32 @@
+import COURSES from "./data.js";
 import {
   getStudentPercentage,
   getClassAverage,
   addAssignmentToCourse,
 } from "./utils.js";
 
-const courses = [
-  {
-    id: "CS277",
-    name: "Web Development",
-    students: [
-      {
-        id: 1,
-        name: "Maria",
-        assignments: [
-          { name: "Project 1", points: 85, maxPoints: 100 },
-          { name: "Quiz 1", points: 18, maxPoints: 20 },
-        ],
-      },
-      {
-        id: 2,
-        name: "John",
-        assignments: [
-          { name: "Project 1", points: 92, maxPoints: 100 },
-          { name: "Quiz 1", points: 19, maxPoints: 20 },
-        ],
-      },
-    ],
-  },
-];
-
 // Test student percentage
-const mariaPercentage = getStudentPercentage({
-  courses,
-  courseId: "CS277",
-  studentId: 1,
-});
+const CIS277 = COURSES[0];
 
-console.info("Maria's percentage:", mariaPercentage);
-const johnPercentage = getStudentPercentage({
-  courses,
-  courseId: "CS277",
-  studentId: 2,
-});
-console.info("John's percentage:", johnPercentage);
+// Find Maria and John by name
+const maria = CIS277.students.find((student) => student.name === "Maria");
+const john = CIS277.students.find((student) => student.name === "John");
+
+console.info(`Maria's percentage: ${getStudentPercentage(CIS277, maria.id)}%`);
+console.info(`John's percentage: ${getStudentPercentage(CIS277, john.id)}%`);
 
 // Test class average
-const classAverage = getClassAverage(courses, "CS277");
-console.info("Class average:", classAverage);
+console.info(`Class average: ${getClassAverage(CIS277)}%`);
 
 // Test adding assignment
-const updatedGradeBook = addAssignmentToCourse({
-  courses,
-  courseId: "CS277",
-  assignmentName: "Homework 1",
-  maxPoints: 50,
+console.info("Adding assignment: Shows original vs new data (immutable)");
+const newCourse = addAssignmentToCourse({
+  course: CIS277,
+  assignmentName: "Project 2",
+  maxPoints: 100,
 });
-console.info("Updated gradebook:", updatedGradeBook);
 
-export default courses;
+console.info("Original assignments for Maria:", maria.assignments);
+
+const newMaria = newCourse.students.find((student) => student.name === "Maria");
+console.info("New assignments for Maria:", newMaria.assignments);
