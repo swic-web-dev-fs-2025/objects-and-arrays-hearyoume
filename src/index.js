@@ -1,4 +1,4 @@
-import COURSES from "./data.js";
+import COURSE from "./data.js";
 import {
   getStudentPercentage,
   getClassAverage,
@@ -6,7 +6,7 @@ import {
 } from "./utils.js";
 
 // Test student percentage
-const CIS277 = COURSES[0];
+const CIS277 = COURSE[0];
 
 // Find Maria and John by name
 const maria = CIS277.students.find((student) => student.name === "Maria");
