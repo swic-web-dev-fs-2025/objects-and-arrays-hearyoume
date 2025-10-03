@@ -34,4 +34,28 @@ const getStudentPercentage = (course, studentId) => {
   return Math.round((totalPoints / totalMaxPoints) * 100);
 };
 
-export { getStudentPercentage, getClassAverage, addAssignmentToCourse };
+const calculateDiscount = (price, discountPercent) => {
+  return price * (discountPercent / 100);
+};
+
+// eslint-disable-next-line complexity
+const formatGrade = (percentage) => {
+  if (percentage >= 90) return "A";
+  if (percentage >= 80) return "B";
+  if (percentage >= 70) return "C";
+  if (percentage >= 60) return "D";
+  return "F";
+};
+
+const isValidScore = (points, maxPoints) => {
+  return points >= 0 && points <= maxPoints;
+};
+
+export {
+  getStudentPercentage,
+  getClassAverage,
+  addAssignmentToCourse,
+  formatGrade,
+  isValidScore,
+  calculateDiscount,
+};
