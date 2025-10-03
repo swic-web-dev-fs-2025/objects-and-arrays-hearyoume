@@ -3,6 +3,9 @@ import {
   getStudentPercentage,
   getClassAverage,
   addAssignmentToCourse,
+  formatGrade,
+  isValidScore,
+  calculateDiscount,
 } from "./utils.js";
 import COURSE from "./data.js";
 
@@ -123,5 +126,48 @@ describe("addAssignmentToCourse", () => {
       maxPoints: 50,
     });
     expect(CIS277.students[0].assignments.length).toBe(originalStudentCount);
+  });
+});
+
+describe("formatGrade", () => {
+  it("should return 'A' for percentages equal to or above 90", () => {
+    expect(formatGrade(95)).toBe("A");
+    expect(formatGrade(90)).toBe("A");
+  });
+
+  it("should return 'B' for percentages between 80 and 89", () => {
+    expect(formatGrade(85)).toBe("B");
+    expect(formatGrade(80)).toBe("B");
+  });
+
+  it("should return 'C' for percentages between 70 and 79", () => {
+    expect(formatGrade(75)).toBe("C");
+    expect(formatGrade(70)).toBe("C");
+  });
+
+  it("should return 'D' for percentages between 60 and 69", () => {
+    expect(formatGrade(65)).toBe("D");
+    expect(formatGrade(60)).toBe("D");
+  });
+
+  it("should return 'F' for percentages below 60", () => {
+    expect(formatGrade(59)).toBe("F");
+    expect(formatGrade(0)).toBe("F");
+  });
+});
+
+describe("isValidScore", () => {
+  it("should return true for valid scores", () => {
+    expect(isValidScore(50, 100)).toBe(true);
+    expect(isValidScore(0, 100)).toBe(true);
+    expect(isValidScore(100, 100)).toBe(true);
+  });
+});
+
+describe("calculateDiscount", () => {
+  it("should calculate the discounted price correctly", () => {
+    expect(calculateDiscount(100, 20)).toBe(20);
+    expect(calculateDiscount(50, 10)).toBe(5);
+    expect(calculateDiscount(200, 50)).toBe(100);
   });
 });
