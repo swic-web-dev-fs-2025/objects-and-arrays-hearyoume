@@ -6,6 +6,9 @@ import {
   formatGrade,
   isValidScore,
   calculateDiscount,
+  generateStudentId,
+  calculateLetterGrade,
+  findTopStudent,
 } from "./utils.js";
 import COURSE from "./data.js";
 
@@ -169,5 +172,39 @@ describe("calculateDiscount", () => {
     expect(calculateDiscount(100, 20)).toBe(20);
     expect(calculateDiscount(50, 10)).toBe(5);
     expect(calculateDiscount(200, 50)).toBe(100);
+  });
+});
+
+describe("generateStudentId", () => {
+  it("should generate student ID correctly", () => {
+    const id = generateStudentId("John", "Smith");
+    expect(id).toMatch(/^jsmith\d{3}$/); // Pattern: jsmith + 3 digits
+  });
+});
+
+describe("calculateLetterGrade", () => {
+  it("should calculate letter grades correctly", () => {
+    expect(calculateLetterGrade(95)).toBe("A");
+    expect(calculateLetterGrade(85)).toBe("B");
+    expect(calculateLetterGrade(75)).toBe("C");
+    expect(calculateLetterGrade(65)).toBe("D");
+    expect(calculateLetterGrade(55)).toBe("F");
+  });
+});
+
+describe("findTopStudent", () => {
+  it("should find student with highest percentage", () => {
+    const testCourse = {
+      students: [
+        { name: "Alice", assignments: [{ maxPoints: 100, pointsEarned: 85 }] },
+        { name: "Bob", assignments: [{ maxPoints: 100, pointsEarned: 95 }] },
+        {
+          name: "Charlie",
+          assignments: [{ maxPoints: 100, pointsEarned: 75 }],
+        },
+      ],
+    };
+    const topStudent = findTopStudent(testCourse);
+    expect(topStudent.name).toBe("Bob");
   });
 });
