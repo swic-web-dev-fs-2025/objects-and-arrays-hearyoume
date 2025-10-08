@@ -10,12 +10,30 @@ import {
   calculateLetterGrade,
   findTopStudent,
 } from "./utils.js";
-import COURSE from "./data.js";
 
-// Use real data for most tests
-const CIS277 = COURSE[0];
-
-// Main describe block split into smaller blocks
+// Example CIS277 course object for testing
+const CIS277 = {
+  id: "CIS277",
+  name: "Web Development",
+  students: [
+    {
+      id: 1,
+      name: "Maria",
+      assignments: [
+        { name: "Project 1", points: 85, maxPoints: 100 },
+        { name: "Quiz 1", points: 18, maxPoints: 20 },
+      ],
+    },
+    {
+      id: 2,
+      name: "John",
+      assignments: [
+        { name: "Project 1", points: 92, maxPoints: 100 },
+        { name: "Quiz 1", points: 19, maxPoints: 20 },
+      ],
+    },
+  ],
+};
 
 // eslint-disable-next-line max-lines-per-function
 describe("getStudentPercentage", () => {
